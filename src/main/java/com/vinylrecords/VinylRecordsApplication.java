@@ -1,11 +1,10 @@
 package com.vinylrecords;
 
-import com.vinylrecords.models.Record;
+import com.vinylrecords.models.RecordDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import com.vinylrecords.repositories.VinylRecordsRepository;
 
@@ -14,7 +13,7 @@ import com.vinylrecords.repositories.VinylRecordsRepository;
 public class VinylRecordsApplication implements CommandLineRunner {
 
 	@Autowired
-	VinylRecordsRepository vinylRecordsRepository;
+	VinylRecordsRepository repository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(VinylRecordsApplication.class, args);
@@ -23,7 +22,7 @@ public class VinylRecordsApplication implements CommandLineRunner {
 	// Create
 	void createVinylRecord() {
 		System.out.println("Data creation started...");
-		vinylRecordsRepository.save(new Record());
+		repository.save(new RecordDocument());
 		System.out.println("Data creation complete.");
 	}
 
