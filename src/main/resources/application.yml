@@ -3,3 +3,10 @@ spring:
     mongodb:
       database: records
       uri: mongodb+srv://vinyl-record:0mq5SCv5z4ulLkE5@cluster0.ociik1u.mongodb.net/?retryWrites=true&w=majority
+
+server:
+  port: 8181
+
+logging:
+  level:
+    root: INFO

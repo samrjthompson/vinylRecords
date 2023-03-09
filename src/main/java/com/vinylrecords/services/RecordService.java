@@ -4,6 +4,9 @@ import com.vinylrecords.models.Created;
 import com.vinylrecords.models.RecordDocument;
 import com.vinylrecords.models.Updated;
 import com.vinylrecords.repositories.VinylRecordsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,8 @@ import java.util.Optional;
 @Service
 public class RecordService {
 
+    Logger logger = LoggerFactory.getLogger(RecordService.class);
+
     private final VinylRecordsRepository repository;
 
     public RecordService(VinylRecordsRepository repository) {
@@ -22,6 +27,7 @@ public class RecordService {
 
     public void upsertRecord(String recordNumber, RecordDocument requestBody) throws ServiceUnavailableException {
         try {
+            requestBody.setId(recordNumber);
             Optional<RecordDocument> existingDocument = repository.findById(recordNumber);
 
             existingDocument.map(RecordDocument::getCreated)
@@ -31,6 +37,7 @@ public class RecordService {
             requestBody.setUpdated(new Updated().setAt(LocalDateTime.now()));
 
             repository.save(requestBody);
+            logger.info("Successfully saved document!");
         } catch (DataAccessException ex) {
             throw new ServiceUnavailableException("Data access exception thrown when calling database");
         }
