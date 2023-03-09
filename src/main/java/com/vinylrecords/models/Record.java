@@ -8,4 +8,7 @@ public class Record {
     @Id
     private String id;
     private String name;
+    private int albumYear;
+    private Updated updated;
+    private Created created;
 }
