@@ -23,7 +23,7 @@ public class VinylRecordsApplication implements CommandLineRunner {
 	// Create
 	void createVinylRecord() {
 		System.out.println("Data creation started...");
-		vinylRecordsRepository.save(new Record("123", "Fleetwood Mac"));
+		vinylRecordsRepository.save(new Record());
 		System.out.println("Data creation complete.");
 	}
 
