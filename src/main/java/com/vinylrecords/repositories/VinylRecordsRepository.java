@@ -1,9 +1,9 @@
 package com.vinylrecords.repositories;
 
-import com.vinylrecords.models.Record;
+import com.vinylrecords.models.RecordDocument;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface VinylRecordsRepository extends MongoRepository<Record, String> {
+@Repository("repository")
+public interface VinylRecordsRepository extends MongoRepository<RecordDocument, String> {
 }
