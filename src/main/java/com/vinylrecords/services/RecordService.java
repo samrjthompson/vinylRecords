@@ -1,5 +1,6 @@
 package com.vinylrecords.services;
 
+import com.vinylrecords.exceptions.NotFoundException;
 import com.vinylrecords.models.Created;
 import com.vinylrecords.models.RecordDocument;
 import com.vinylrecords.models.Updated;
@@ -7,6 +8,7 @@ import com.vinylrecords.repositories.VinylRecordsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import javax.naming.ServiceUnavailableException;
@@ -45,22 +47,23 @@ public class RecordService {
 
     public RecordDocument getRecord(String recordNumber) throws ServiceUnavailableException {
         try {
-            return repository.findById(recordNumber).orElseThrow();
+            return repository.findById(recordNumber).orElseThrow(() -> new NotFoundException("No records could be found for that artist!"));
         } catch (DataAccessException ex) {
             throw new ServiceUnavailableException("Data access exception thrown when calling database");
+        } catch (NotFoundException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
     public List<RecordDocument> getRecordByArtist(String artist) throws ServiceUnavailableException {
         try {
             List<RecordDocument> recordList = repository.findAllByArtistName(artist.toLowerCase());
-            if (!recordList.isEmpty()) {
-                logger.info("No records could be found for that artist!");
-            } else {
-                return recordList;
-            }
+            return Optional.ofNullable(recordList).orElseThrow(() -> new NotFoundException("No records could be found for that artist!"));
         } catch (DataAccessException ex) {
             throw new ServiceUnavailableException("Data access exception thrown when calling database");
+        } catch (NotFoundException ex) {
+            logger.info("No records could be found for that artist!");
+            return null;
         }
     }
 
