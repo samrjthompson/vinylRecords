@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.ServiceUnavailableException;
+import java.util.List;
 
 @RestController
 public class RecordController {
@@ -24,10 +25,10 @@ public class RecordController {
     }
 
     @GetMapping("/records/{record_number}")
-    public ResponseEntity<Void> recordGet (
+    public ResponseEntity<RecordDocument> recordGet (
             @PathVariable("record_number") String recordNumber) throws ServiceUnavailableException {
         recordService.getRecord(recordNumber);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok(recordService.getRecord(recordNumber));
     }
 
     @DeleteMapping("/records/{record_number}")
@@ -35,5 +36,11 @@ public class RecordController {
             @PathVariable("record_number") String recordNumber) throws ServiceUnavailableException {
         recordService.deleteRecord(recordNumber);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/records/{artist}")
+    public ResponseEntity<List<RecordDocument>> recordGetArtist (
+            @PathVariable("artist") String artist) throws ServiceUnavailableException {
+        return ResponseEntity.ok(recordService.getRecordByArtist(artist));
     }
 }
