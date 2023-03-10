@@ -8,7 +8,7 @@ public class RecordDocument {
 
     @Id
     private String id;
-    private String name;
+    private String artist;
     private int albumYear;
     private Updated updated;
     private Created created;
@@ -22,16 +22,18 @@ public class RecordDocument {
         return this;
     }
 
-    public String getName() {
-        return name;
+    public String getArtist() {
+
+        return artist;
     }
 
-    public RecordDocument setName(String name) {
-        this.name = name;
+    public RecordDocument setArtist(String artist) {
+        this.artist = artist;
         return this;
     }
 
     public int getAlbumYear() {
+
         return albumYear;
     }
 
@@ -41,6 +43,7 @@ public class RecordDocument {
     }
 
     public Updated getUpdated() {
+
         return updated;
     }
 
