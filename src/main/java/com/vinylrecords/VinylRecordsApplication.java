@@ -15,17 +15,17 @@ import java.net.URISyntaxException;
 public class VinylRecordsApplication {
 
 	public static void main(String[] args) {
-//		if (!Desktop.isDesktopSupported()) {
-//			System.out.println("This app needs a desktop manager to run, exiting.");
-//			System.exit(1);
-//		}
-//		new SpringApplicationBuilder(VinylRecordsApplication.class).headless(false).run(args);
-		SpringApplication.run(VinylRecordsApplication.class, args);
+		if (!Desktop.isDesktopSupported()) {
+			System.out.println("This app needs a desktop manager to run, exiting.");
+			System.exit(1);
+		}
+		new SpringApplicationBuilder(VinylRecordsApplication.class).headless(false).run(args);
+//		SpringApplication.run(VinylRecordsApplication.class, args);
 	}
 
-//	@EventListener(ApplicationReadyEvent.class)
-//	public void openBrowserAfterStartup() throws IOException, URISyntaxException {
-//		// open default browser after start:
-//		Desktop.getDesktop().browse(new URI("http://localhost:8181/records"));
-//	}
+	@EventListener(ApplicationReadyEvent.class)
+	public void openBrowserAfterStartup() throws IOException, URISyntaxException {
+		// open default browser after start:
+		Desktop.getDesktop().browse(new URI("http://localhost:8181"));
+	}
 }

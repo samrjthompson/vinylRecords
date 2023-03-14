@@ -55,4 +55,9 @@ public class RecordController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/index")
+    public String showForm() {
+        return "index";
+    }
 }
