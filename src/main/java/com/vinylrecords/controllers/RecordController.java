@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.naming.ServiceUnavailableException;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class RecordController {
 
@@ -41,6 +42,22 @@ public class RecordController {
     @GetMapping("/records/{artist}")
     public ResponseEntity<List<RecordDocument>> recordGetArtist (
             @PathVariable("artist") String artist) throws ServiceUnavailableException {
-        return ResponseEntity.ok(recordService.getRecordByArtist(artist));
+        return recordService.getRecordByArtist(artist)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/records")
+    public ResponseEntity<List<RecordDocument>> recordGetAll () throws ServiceUnavailableException {
+//        ResponseEntity<List<RecordDocument>> response = new ResponseEntity<>(HttpStatus.OK);
+//                response.getHeaders().add("Access-Control-Allow-Origin", "*");
+        return recordService.getAllRecords()
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/index")
+    public String showForm() {
+        return "index";
     }
 }
