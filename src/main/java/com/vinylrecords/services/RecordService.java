@@ -8,7 +8,6 @@ import com.vinylrecords.repositories.VinylRecordsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import javax.naming.ServiceUnavailableException;
@@ -55,16 +54,12 @@ public class RecordService {
         }
     }
 
-    public List<RecordDocument> getRecordByArtist(String artist) throws ServiceUnavailableException {
-        try {
-            List<RecordDocument> recordList = repository.findAllByArtistName(artist.toLowerCase());
-            return Optional.ofNullable(recordList).orElseThrow(() -> new NotFoundException("No records could be found for that artist!"));
-        } catch (DataAccessException ex) {
-            throw new ServiceUnavailableException("Data access exception thrown when calling database");
-        } catch (NotFoundException ex) {
-            logger.info("No records could be found for that artist!");
-            return null;
-        }
+    public Optional<List<RecordDocument>> getRecordByArtist(String artist) {
+        return Optional.ofNullable(repository.findAllByArtistName(artist.toLowerCase()));
+    }
+
+    public Optional<List<RecordDocument>> getAllRecords() {
+        return Optional.of(repository.findAll());
     }
 
     public void deleteRecord(String recordNumber) throws ServiceUnavailableException {
