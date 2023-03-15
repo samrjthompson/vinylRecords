@@ -33,5 +33,6 @@ export default function Home() {
                 }
             </tbody>
         </table>
+        
     )
 }
