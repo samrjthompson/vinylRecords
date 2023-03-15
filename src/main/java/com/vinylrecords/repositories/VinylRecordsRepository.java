@@ -12,4 +12,7 @@ public interface VinylRecordsRepository extends MongoRepository<RecordDocument, 
 
     @Query("{'artist': '?0'}")
     List<RecordDocument> findAllByArtistName(String artist);
+
+    @Query("{$and: [{'artist': '?0'}, {'albumName': '?1'}, {'albumYear': ?2}]}")
+    RecordDocument findRecordByArtistAndAlbum(String artist, String albumName, int albumYear);
 }

@@ -8,7 +8,7 @@ export default function Home() {
     }, []);
 
     const getRecords = async () => {
-        const response = await axios.get('http://localhost:8181/records');
+        const response = await axios.get('/records');
         setRecords(response.data);
     };
 
@@ -33,5 +33,6 @@ export default function Home() {
                 }
             </tbody>
         </table>
+        
     )
 }
