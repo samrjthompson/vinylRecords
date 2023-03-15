@@ -10,6 +10,7 @@ public class RecordDocument {
     private String id;
     private String artist;
     private int albumYear;
+    private String albumName;
     private Updated updated;
     private Created created;
 
@@ -58,6 +59,15 @@ public class RecordDocument {
 
     public RecordDocument setCreated(Created created) {
         this.created = created;
+        return this;
+    }
+
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public RecordDocument setAlbumName(String albumName) {
+        this.albumName = albumName;
         return this;
     }
 }

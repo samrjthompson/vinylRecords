@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.naming.ServiceUnavailableException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,16 +27,25 @@ public class RecordService {
         this.repository = repository;
     }
 
-    public void upsertRecord(String recordNumber, RecordDocument requestBody) throws ServiceUnavailableException {
+    public void upsertRecord(RecordDocument requestBody) throws ServiceUnavailableException {
         try {
-            Optional<RecordDocument> existingDocument = repository.findById(recordNumber);
+            Optional<RecordDocument> existingRecord =
+                    Optional.ofNullable(repository.
+                        findRecordByArtistAndAlbum(
+                                requestBody.getArtist().toLowerCase(),
+                                requestBody.getAlbumName().toLowerCase(),
+                                requestBody.getAlbumYear()));
 
-            existingDocument.map(RecordDocument::getCreated)
-                    .ifPresentOrElse(requestBody::setCreated,
-                            () -> requestBody.setCreated(new Created().setAt(LocalDateTime.now())));
+            if (existingRecord.isPresent()) {
+                requestBody.setCreated(existingRecord.get().getCreated());
+                requestBody.setId(existingRecord.get().getId());
+            } else {
+                requestBody.setCreated(new Created().setAt(LocalDateTime.now()));
+            }
 
             requestBody.setUpdated(new Updated().setAt(LocalDateTime.now()));
             requestBody.setArtist(requestBody.getArtist().toLowerCase());
+            requestBody.setAlbumName(requestBody.getAlbumName().toLowerCase());
 
             repository.save(requestBody);
             logger.info("Successfully saved document!");

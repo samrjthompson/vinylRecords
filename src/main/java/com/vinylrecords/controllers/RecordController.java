@@ -17,11 +17,10 @@ public class RecordController {
     @Autowired
     private RecordService recordService;
 
-    @PutMapping("/records/{record_number}")
+    @PutMapping("/records")
     public ResponseEntity<Void> recordUpsert (
-            @PathVariable("record_number") String recordNumber,
             @RequestBody RecordDocument requestBody) throws ServiceUnavailableException {
-        recordService.upsertRecord(recordNumber, requestBody);
+        recordService.upsertRecord(requestBody);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
